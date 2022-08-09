@@ -1,29 +1,23 @@
 const Task = require("../models/Task");
+const asyncWrapper = require("../async");
 
-const getAllTasks = async (req, res) => {
-  try {
-    const tasks = await Task.find({});
-    res.status(200).json({ tasks });
-    // res.status(200).json({ tasks, amount: tasks.length });
-    // res.status(200).json({ success: true, data: {tasks, nbHits: tasks.length}});
-    // res.status(200).json({ status: 'success', data: {tasks, nbHits: tasks.length}});
-  } catch (err) {
-    res.status(500).json({ msg: err });
-  }
-};
+const getAllTasks = asyncWrapper(async (req, res) => {
+  const tasks = await Task.find({});
+  res.status(200).json({ tasks });
+  // res.status(200).json({ tasks, amount: tasks.length });
+  // res.status(200).json({ success: true, data: {tasks, nbHits: tasks.length}});
+  // res.status(200).json({ status: 'success', data: {tasks, nbHits: tasks.length}});
+});
 
-const createTask = async (req, res) => {
+const createTask = asyncWrapper(async (req, res) => {
   // res.send('create task');
   // console.log(req.body); //JS object
   // res.json(req.body);
-  try {
-    const task = await Task.create(req.body);
-    res.status(201).json({ task });
-    // console.log(task); //JS object
-  } catch (error) {
-    res.status(500).json({ msg: error });
-  }
-};
+
+  const task = await Task.create(req.body);
+  res.status(201).json({ task });
+  // console.log(task); //JS object
+});
 
 const getTask = async (req, res) => {
   // res.send('get single task');
